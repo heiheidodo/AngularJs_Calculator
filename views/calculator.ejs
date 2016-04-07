@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <head>
+        <title>CmpE273 Lab1: Calculator</title>
+    </head>
+    <body>
+    <div ng-app="myApp" ng-controller="myCtrl">
+        <br>{{ inNumber }} {{ operator }} {{ newNumber }} {{ equalmark }} {{ result }}</br>
+        <br>
+            <button ng-click='calculate(7)' value="7" name="num7">7</button>
+            <button ng-click='calculate(8)' value="8" name="num8">8</button>
+            <button ng-click='calculate(9)' value="9" name="num9">9</button>
+            <button ng-click='operators("/")' value="/" name="divide">/</button>
+        </br>
+        <br>
+            <button ng-click='calculate(4)' value="4" name="num4">4</button>
+            <button ng-click='calculate(5)' value="5" name="num5">5</button>
+            <button ng-click='calculate(6)' value="6" name="num6">6</button>
+            <button ng-click='operators("*")' value="*" name="multiply">*</button>
+        </br>
+        <br>
+            <button ng-click='calculate(1)' value="1" name="num1">1</button>
+            <button ng-click='calculate(2)' value="2" name="num2">2</button>
+            <button ng-click='calculate(3)' value="3" name="num3">3</button>
+            <button ng-click='operators("-")' value="-" name="minus">-</button>
+        </br>
+        <br>
+            <button ng-click='calculate(0)' value="0" name="num0">0</button>
+            <button ng-click='reset()' name="reset">C</button>
+            <button ng-click='getResult()' name="equals">=</button>
+            <button ng-click='operators("+")' value="+" name="plus">+</button>
+        </br> 
+    </div>  
+     
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function($scope) 
+        {
+        
+            $scope.reset = function()
+            {
+                $scope.inNumber = null;
+                $scope.operator = null;
+                $scope.equalmark = null;
+                $scope.result = null;
+                $scope.newNumber = null;
+            };
+            
+            $scope.calculate = function(button)
+            {
+                if ($scope.result != null)
+                {
+                    $scope.reset();
+                }
+                if ($scope.operator != null)
+                {
+                    if ($scope.newNumber == null)
+                    {
+                        $scope.newNumber = button;
+                    }
+                    else
+                    {
+                        $scope.newNumber += String(button);
+                        $scope.newNumber *= 1;
+                    }
+                }
+                else
+                {
+                    if ($scope.inNumber == null)
+                    {
+                        $scope.inNumber = button;
+                    }
+                    else
+                    {
+                        $scope.inNumber += String(button);
+                        $scope.inNumber *= 1;
+                    }                    
+                }
+            };
+            
+            $scope.operators = function(opend)
+            {
+                if ($scope.equalmark == "=")
+                {
+                    $scope.inNumber = $scope.result;
+                    $scope.equalmark = null;
+                    $scope.result = null;
+                    $scope.newNumber = null;
+                }
+                if ($scope.newNumber != null && $scope.equalmark == null)
+                {
+                    $scope.getResult();
+                    $scope.inNumber = $scope.result;
+                    $scope.operator = null;
+                    $scope.newNumber = null;
+                    $scope.result = null;
+                    $scope.equalmark = null;
+                }
+                if ($scope.inNumber == null)
+                {
+                    $scope.inNumber = 0;
+                }
+                if (opend == "+")
+                {  
+                    $scope.operator = "+";
+                }
+                if (opend == '-')
+                {  
+                    $scope.operator = "-";
+                }                
+                if (opend == '*')
+                {  
+                    $scope.operator = "*";
+                }               
+                if (opend == '/')
+                {  
+                    $scope.operator = "/";
+                }
+            }
+            
+            $scope.getResult = function()
+            {
+                if ($scope.newNumber != null)
+                {
+                    if ($scope.operator == "+")
+                    {
+                        $scope.result = $scope.inNumber + $scope.newNumber;
+                    }
+                    if ($scope.operator == "-")
+                    {
+                        $scope.result = $scope.inNumber - $scope.newNumber;
+                    }    
+                    if ($scope.operator == "*")
+                    {
+                        $scope.result = $scope.inNumber * $scope.newNumber;
+                    }
+                    if ($scope.operator == "/")
+                    {
+                        $scope.result = $scope.inNumber / $scope.newNumber;
+                    }     
+                    $scope.equalmark = "=";
+                }                                     
+            }
+            
+        });
+    </script>    
+    </body>
+</html>
